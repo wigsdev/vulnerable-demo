@@ -1,0 +1,52 @@
+--- a/.env
++++ b/.env
+@@ -1,3 +1,3 @@
+ # Configuration environment
+-AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
++AWS_ACCESS_KEY_ID=CHANGEME_AWS_ACCESS_KEY_ID
+ 
+--- a/deploy/server.pem
++++ b/deploy/server.pem
+@@ -1,3 +1,3 @@
+ -----BEGIN RSA PRIVATE KEY-----
+-MIIEowIBAAKCAQEA0z7...
++REDACTED_PRIVATE_KEY
+ -----END RSA PRIVATE KEY-----
+--- a/src/auth.py
++++ b/src/auth.py
+@@ -4,5 +4,5 @@
+ 
+ # Authentication tokens
+-BEARER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
++BEARER_TOKEN = "CHANGEME_BEARER_TOKEN"
+ 
+--- a/src/config.py
++++ b/src/config.py
+@@ -4,8 +4,8 @@
+ # App configuration
+-AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
+-AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+-DB_USER = "admin"
+-DB_PASSWORD = "SuperSecretPassword123!"
++AWS_ACCESS_KEY_ID = "CHANGEME_AWS_ACCESS_KEY_ID"
++AWS_SECRET_ACCESS_KEY = "CHANGEME_AWS_SECRET_ACCESS_KEY"
++DB_USER = "admin"
++DB_PASSWORD = "CHANGEME_DB_PASSWORD"
+ 
+--- a/src/database.py
++++ b/src/database.py
+@@ -7,4 +7,4 @@
+ DB_HOST = "localhost"
+ DB_PORT = 5432
+-DB_PASSWORD = "HardcodedPassword999!"
++DB_PASSWORD = "CHANGEME_DB_PASSWORD"
+ 
+--- a/infra/cloudformation.json
++++ b/infra/cloudformation.json
+@@ -19,4 +19,4 @@
+         "Effect": "Allow",
+-        "Action": "*",
+-        "Resource": "*"
++        "Action": "s3:GetObject",
++        "Resource": "arn:aws:s3:::my-secure-bucket/*"
+       }
