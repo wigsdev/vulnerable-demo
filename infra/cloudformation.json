@@ -1,0 +1,76 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Stack INSEGURO - Solo para testing de auditoría",
+  "Resources": {
+    "AdminRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "SuperAdminRole",
+        "AssumeRolePolicyDocument": {
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": "lambda.amazonaws.com"},
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "GodModePolicy",
+          "PolicyDocument": {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": "*",
+              "Resource": "*"
+            }]
+          }
+        }]
+      }
+    },
+    "OpenSSHSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "INSEGURO - SSH abierto al mundo",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 22,
+            "ToPort": 22,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3389,
+            "ToPort": 3389,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "PublicS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "my-public-bucket-no-encryption",
+        "AccessControl": "PublicRead"
+      }
+    },
+    "LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "vulnerable-function",
+        "Runtime": "python3.11",
+        "Handler": "index.handler",
+        "Role": {"Fn::GetAtt": ["AdminRole", "Arn"]},
+        "Environment": {
+          "Variables": {
+            "DB_PASSWORD": "hardcoded_in_template_bad!"
+          }
+        }
+      }
+    }
+  }
+}
