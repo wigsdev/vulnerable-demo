@@ -1,0 +1,55 @@
+--- a/.env
++++ b/.env
+@@ -1,3 +1,3 @@
+-AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
++AWS_ACCESS_KEY_ID=REDACTED_AWS_ACCESS_KEY
+ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+--- a/deploy/server.pem
++++ b/deploy/server.pem
+@@ -1,3 +1,3 @@
+-----BEGIN RSA PRIVATE KEY-----
+-MIIEpAIBAAKCAQEA0...
+-----END RSA PRIVATE KEY-----
++-----BEGIN PRIVATE KEY-----
++[REDACTED PRIVATE KEY]
++-----END PRIVATE KEY-----
+--- a/infra/cloudformation.json
++++ b/infra/cloudformation.json
+@@ -18,6 +18,6 @@
+             "Statement": [{
+                 "Effect": "Allow",
+-                "Action": "*",
+-                "Resource": "*"
++                "Action": ["s3:GetObject"],
++                "Resource": "arn:aws:s3:::example-bucket/*"
+             }]
+         }
+--- a/src/auth.py
++++ b/src/auth.py
+@@ -4,6 +4,6 @@
+ 
+ def verify_token(token: str) -> bool:
+-    SECRET_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
++    SECRET_TOKEN = os.environ.get("JWT_SECRET_TOKEN")
+     return token == SECRET_TOKEN
+--- a/src/config.py
++++ b/src/config.py
+@@ -4,9 +4,9 @@
+ 
+-AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
+-AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+-DB_USER = "admin"
+-DB_PASSWORD = "SuperSecretPassword123!"
++AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
++AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
++DB_USER = os.environ.get("DB_USER", "admin")
++DB_PASSWORD = os.environ.get("DB_PASSWORD") # Loaded from environment variable
+--- a/src/database.py
++++ b/src/database.py
+@@ -7,5 +7,5 @@
+ DB_HOST = "localhost"
+ DB_PORT = 5432
+-DB_PASSWORD = "HardcodedDatabasePassword999!"
++DB_PASSWORD = os.environ.get("DB_PASSWORD") # Fixed: removed hardcoded secret
+ 
+ def get_connection():
