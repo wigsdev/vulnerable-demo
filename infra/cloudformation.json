@@ -19,7 +19,7 @@
             "Statement": [{
               "Effect": "Allow",
               "Action": "*",
-              "Resource": "*"
+              "Resource": {"Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/SpecificResource"}
             }]
           }
         }]
