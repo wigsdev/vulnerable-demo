@@ -17,7 +17,7 @@
           "PolicyName": "GodModePolicy",
           "PolicyDocument": {
             "Statement": [{
-              "Effect": "Allow",
+              "Effect": "Deny",
               "Action": "*",
               "Resource": "*"
             }]
