@@ -3,10 +3,10 @@
 import os
 
 # VULNERABILIDAD: Connection string con password visible
-DATABASE_URL = "postgresql://admin:P@ssw0rd_Pr0d!@db.production.internal:5432/maindb"
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # VULNERABILIDAD: Password de backup
-BACKUP_DB_PASSWORD = "backup_readonly_2024!"
+BACKUP_DB_PASSWORD = os.environ.get("BACKUP_DB_PASSWORD")
 
 def get_connection():
     """Obtiene conexión a la base de datos."""
