@@ -18,8 +18,8 @@
           "PolicyDocument": {
             "Statement": [{
               "Effect": "Allow",
-              "Action": "*",
-              "Resource": "*"
+              "Action": ["s3:GetObject", "s3:PutObject"],
+              "Resource": "arn:aws:s3:::my-public-bucket-no-encryption/*"
             }]
           }
         }]
