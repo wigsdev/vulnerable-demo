@@ -1,13 +1,12 @@
 """Módulo de autenticación — CONTIENE TOKENS EXPUESTOS."""
 
-import os
 import jwt
 
 # VULNERABILIDAD: JWT token hardcoded
-ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN") # token
+ADMIN_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
 
 # VULNERABILIDAD: Secret key para JWT signing
-JWT_SECRET = os.environ.get("JWT_SECRET") # secret
+JWT_SECRET = "my-super-secret-key-never-share-this"
 
 def authenticate(username, password):
     """Autentica un usuario — sin hashing de password."""
